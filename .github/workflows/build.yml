@@ -1,33 +1,6 @@
-name: Build Alex
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
+      - name: Build Alex Debug
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-          python -m pip install pyinstaller
-
-      - name: Build Alex
-        run: |
-          python -m PyInstaller --name Alex --onefile --windowed main.py
+          python -m PyInstaller --name Alex --onefile main.py
 
       - name: Verify Alex.exe
         shell: cmd
@@ -38,10 +11,3 @@ jobs:
           )
           echo Alex.exe was created successfully.
           dir "dist\Alex.exe"
-
-      - name: Upload Alex.exe
-        uses: actions/upload-artifact@v4
-        with:
-          name: Alex-Windows
-          path: dist/Alex.exe
-          if-no-files-found: error
